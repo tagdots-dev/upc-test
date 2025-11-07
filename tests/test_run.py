@@ -8,6 +8,7 @@ import os
 import shutil
 import sys
 import unittest
+from unittest import mock
 from unittest.mock import patch
 
 from click.testing import CliRunner
@@ -20,6 +21,10 @@ from pkg_95120.run import (
     main,
     update_pre_commit_config,
 )
+
+
+def get_gh_token():
+    return os.environ.get("GH_TOKEN")
 
 
 class TestGetAuth(unittest.TestCase):
@@ -35,20 +40,33 @@ class TestGetAuth(unittest.TestCase):
 
     """
     reference: https://github.com/PyGithub/PyGithub/blob/v2.6.1/github/Auth.py#L153-L173
-    assertion: assert Token is token instance is string and has length > 0
+    assertion: assert KeyError when GH_TOKEN env variable does not exist
     """
-    @patch.dict(os.environ, {'GH_TOKEN': 'github_pat_123456'}, clear=True)  # checkov:skip=CKV_SECRET_6
-    def test_get_auth_with_valid_gh_token(self):
-        self.assertIsInstance(get_auth(), Github)
+    @mock.patch.dict(os.environ, {}, clear=True)
+    def test_get_auth_with_no_gh_token(self):
+        with self.assertRaises(KeyError):
+            if "GH_TOKEN" in os.environ:
+                print('GH_TOKEN is found')
+            else:
+                print('GH_TOKEN is not found')
+            get_auth()
 
     """
     reference: https://github.com/PyGithub/PyGithub/blob/v2.6.1/github/Auth.py#L153-L173
-    assertion: assert AssertionError when length of Token is not > 0
+    assertion: assert PermissionError with invalid token
     """
-    @patch.dict(os.environ, {'GH_TOKEN': ''}, clear=True)  # checkov:skip=CKV_SECRET_6
+    @patch.dict(os.environ, {'GH_TOKEN': 'no_permission'}, clear=True)  # checkov:skip=CKV_SECRET_6
     def test_get_auth_with_invalid_gh_token(self):
-        with self.assertRaises(AssertionError):
+        with self.assertRaises(PermissionError):
             get_auth()
+
+    """
+    reference: https://github.com/PyGithub/PyGithub/blob/v2.6.1/github/Auth.py#L153-L173
+    assertion: assert get Github class object successfully from GitHub Action
+    """
+    @patch.dict(os.environ, {'GH_TOKEN': get_gh_token()}, clear=True)  # checkov:skip=CKV_SECRET_6
+    def test_get_auth_with_valid_gh_token(self):
+        self.assertIsInstance(get_auth(), Github)
 
 
 class TestGetOwnerRepo(unittest.TestCase):
