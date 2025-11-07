@@ -62,19 +62,3 @@ repos:
   hooks:
   - name: Python flake8
     id: flake8
-- repo: https://github.com/antonbabenko/pre-commit-terraform
-  rev: v1.103.0
-  hooks:
-  - name: Terraform format
-    id: terraform_fmt
-    args:
-    - --args=-no-color
-    - --args=-diff
-    - --args=-write=false
-    - --args=-recursive
-    - --args=-check
-  - name: Terraform linter
-    id: terraform_tflint
-    args:
-    - --args=--recursive
-    - --args=--format=sarif
