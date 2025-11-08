@@ -32,10 +32,6 @@ TAG_NAME = "('alpha' and 'beta' and 'prerelease' and 'pre-release' and 'rc')"
 def get_auth() -> Github:
     """
     Creates an instance of the Github class to interact with GitHub API
-
-    Parameter(s): None
-
-    Return: GitHub Object
     """
     try:
         gh_token = os.environ['GH_TOKEN']
@@ -162,10 +158,6 @@ def update_pre_commit_config(file: str, variance_list: list):
 def checkout_new_branch() -> Tuple[str, str]:
     """
     Create a git object to checkout a new branch
-
-    Parameter(s): None
-
-    Return: new_local_branch_name, owner_repo
     """
     branch_suffix = ulid.new()
     new_local_branch_name = f'update_pre_commit_{branch_suffix}'
@@ -174,10 +166,11 @@ def checkout_new_branch() -> Tuple[str, str]:
     repo_head_obj = repo.create_head(new_local_branch_name)
     repo_head_obj.checkout()
     repo_remotes_origin_url = repo.remotes.origin.url
-    owner_repo = '/'.join(repo_remotes_origin_url.rsplit('/', 2)[-2:]).replace('.git', '').replace('git@github.com:', '')
+    owner_repo = '/'.join(repo_remotes_origin_url.rsplit('/', 2)[-2:]).\
+        replace('.git', '').replace('git@github.com:', '').replace('https://github.com/', '')
     print(f'Checkout new branch ({new_local_branch_name}) successfully....\n')
 
-    return owner_repo, new_local_branch_name
+    return (owner_repo, new_local_branch_name)
 
 
 def push_commit(file: str, new_local_branch_name: str, msg_suffix: str):
@@ -213,8 +206,6 @@ def create_pr(gh: Github, owner_repo: str, new_local_branch_name: str, variance_
     new_local_branch_name: from checkout_new_branch
     variance_list        : e.g. [{owner_repo: owner_repo, current_rev: current_rev, new_rev: new_rev }]
     msg_suffix           : from main (empty except for "coverage run" where [CI-Testing] is the msg_suffix)
-
-    Return: pr number or None
     """
     try:
         owner = owner_repo.split('/')[0]

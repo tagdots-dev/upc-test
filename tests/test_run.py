@@ -8,7 +8,6 @@ import os
 import shutil
 import sys
 import unittest
-from unittest import mock
 from unittest.mock import patch
 
 from click.testing import CliRunner
@@ -42,7 +41,7 @@ class TestGetAuth(unittest.TestCase):
     reference: https://github.com/PyGithub/PyGithub/blob/v2.6.1/github/Auth.py#L153-L173
     assertion: assert KeyError when GH_TOKEN env variable does not exist
     """
-    @mock.patch.dict(os.environ, {}, clear=True)
+    @patch.dict(os.environ, {}, clear=True)
     def test_get_auth_with_no_gh_token(self):
         with self.assertRaises(KeyError):
             if "GH_TOKEN" in os.environ:
