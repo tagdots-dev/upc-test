@@ -96,7 +96,7 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        repo-url: ${{ github.repository }}
+        repo-url: ${{ github.server_url }}/${{ github.repository }}
         max-days: 10
         dry-run: false
 
@@ -149,7 +149,7 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        repo-url: ${{ github.repository }}
+        repo-url: ${{ github.server_url }}/${{ github.repository }}
         max-idle-days: 10
         exclude-branches: 'badges'
         dry-run: false
