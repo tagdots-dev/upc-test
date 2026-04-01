@@ -1,19 +1,16 @@
 [build-system]
 build-backend = "setuptools.build_meta"
-
 requires = [ "setuptools", "wheel" ]
 
 [project]
 name = "pkg-95120"
 version = "1.1.8"
-
 readme = "README.md"
 license-files = [ "LICENSE" ]
 authors = [
   { name = "developers", email = "developers@tagdots.com" },
 ]
 requires-python = ">=3.12.10"
-
 classifiers = [
   "Intended Audience :: Developers",
   "Programming Language :: Python :: 3 :: Only",
@@ -22,7 +19,6 @@ classifiers = [
   "Programming Language :: Python :: 3.14",
   "Topic :: Software Development :: Build Tools",
 ]
-
 dependencies = [
   "click==8.3.1",
   "gitpython==3.1.46",
@@ -30,12 +26,10 @@ dependencies = [
   "pyyaml==6.0.3",
   "ulid-py==1.1",
 ]
-
 optional-dependencies.local = [
   "commitizen",
   "pre-commit",
 ]
-
 optional-dependencies.test = [
   "build",
   "coverage",
@@ -45,11 +39,9 @@ optional-dependencies.test = [
   "pytest",
   "twine",
 ]
-
 urls.Changelog = "https://www.notavailable.com/changelog"
 urls.Documentation = "https://www.notavailable.com/doc"
 urls.Homepage = "https://www.notavailable.com"
-
 scripts.pkg-95120 = "pkg_95120.run:main"
 
 [dependency-groups]
@@ -57,11 +49,9 @@ test = [
   "coverage[toml]",
 ]
 
-[tool.setuptools.packages.find]
-where = [ "src" ]
-
-[tool.setuptools.dynamic]
-version = { attr = "src.pkg_95120.__init__" }
+[tool.setuptools]
+dynamic.version = { attr = "src.pkg_95120.__init__" }
+packages.find.where = [ "src" ]
 
 [tool.pyproject-fmt]
 column_width = 125
@@ -69,18 +59,14 @@ indent = 2
 keep_full_version = true
 
 [tool.coverage]
+run.branch = true
+run.command_line = "-m pytest -vs"
+run.include = [ "src/pkg_95120/*" ]
+run.omit = [ "tests/*" ]
+report.fail_under = 80
+report.include = [ "src/pkg_95120/*" ]
+report.show_missing = false
 source = [ "." ]
-
-[tool.coverage.run]
-branch = true
-command_line = "-m pytest -vs"
-include = [ "src/pkg_95120/*" ]
-omit = [ "tests/*" ]
-
-[tool.coverage.report]
-fail_under = 80
-show_missing = false
-include = [ "src/pkg_95120/*" ]
 
 [tool.commitizen]
 name = "cz_conventional_commits"
