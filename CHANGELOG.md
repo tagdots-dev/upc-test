@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 1.2.0 (2026-08-10)
+
+### Fix
+
+- pyproject-fmt format update
+
+### Refactor
+
+- reformat pyproject after pyproject_fmt update
+
 ## 1.1.8 (2025-11-13)
 
 ### Fix
