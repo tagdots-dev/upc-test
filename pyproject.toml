@@ -26,9 +26,11 @@ dependencies = [
   "pyyaml~=6.0.3",
   "ulid-py~=1.1.0",
 ]
-urls.Changelog = "https://www.notavailable.com/changelog"
-urls.Documentation = "https://www.notavailable.com/doc"
-urls.Homepage = "https://www.notavailable.com"
+urls.Changelog = "https://github.com/tagdots-dev/pkg-95120/blob/main/CHANGELOG.md"
+urls.Documentation = "https://github.com/tagdots-dev/pkg-95120/blob/main/README.md"
+urls.Homepage = "https://github.com/tagdots-dev"
+urls.Issues = "https://github.com/tagdots-dev/pkg-95120/issues"
+urls.Repository = "https://github.com/tagdots-dev/pkg-95120"
 scripts.pkg-95120 = "pkg_95120.cli:main"
 
 [dependency-groups]
