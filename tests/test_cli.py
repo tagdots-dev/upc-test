@@ -501,7 +501,6 @@ class TestZMain(unittest.TestCase):
         self.assertEqual(result.exit_code, 0)
 
     @patch("pkg_95120.cli.get_origin_owner_repo", return_value="owner/repo")
-    @patch("pkg_95120.cli.get_active_branch_name", return_value="main")
     @patch("pkg_95120.cli.get_auth")
     @patch("pkg_95120.cli.get_owner_repo_revs")
     @patch("pkg_95120.cli.update_pre_commit_config")
@@ -518,15 +517,9 @@ class TestZMain(unittest.TestCase):
         mock_update,
         mock_get_revs,
         mock_get_auth,
-        mock_get_branch,
         mock_get_repo,
     ):
         """Assert CLI creates PR when open_pr=True and variance is detected"""
-        mock_repo_instance = Mock()
-        mock_active_branch = Mock()
-        mock_active_branch.name = "main"
-        mock_repo_instance.active_branch = mock_active_branch
-        mock_repo_instance.heads = {"main": mock_active_branch}
 
         mock_get_revs.return_value = iter(
             [
