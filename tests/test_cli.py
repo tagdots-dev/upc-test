@@ -499,6 +499,7 @@ class TestZMain(unittest.TestCase):
         self.assertEqual(result.exit_code, 0)
 
     @patch("pkg_95120.cli.get_origin_owner_repo", return_value="owner/repo")
+    @patch("pkg_95120.cli.get_active_branch_name", return_value="main")
     @patch("pkg_95120.cli.get_auth")
     @patch("pkg_95120.cli.get_owner_repo_revs")
     @patch("pkg_95120.cli.update_pre_commit_config")
@@ -506,8 +507,10 @@ class TestZMain(unittest.TestCase):
     @patch("pkg_95120.cli.push_commit")
     @patch("pkg_95120.cli.create_pr", return_value=123)
     @patch("pkg_95120.cli.Github")
+    @patch("pkg_95120.cli.git")
     def test_main_create_pr_success(
         self,
+        mock_git,
         mock_github,
         mock_create_pr,
         mock_push,
@@ -515,6 +518,7 @@ class TestZMain(unittest.TestCase):
         mock_update,
         mock_get_revs,
         mock_get_auth,
+        mock_get_branch,
         mock_get_repo,
     ):
         """Assert CLI creates PR when open_pr=True and variance is detected"""
@@ -533,6 +537,15 @@ class TestZMain(unittest.TestCase):
         mock_gh.get_repo.return_value = mock_repo
         mock_github.return_value = mock_gh
         mock_get_auth.return_value = mock_gh
+
+        # Setup mock git repo with heads for checkout
+        mock_repo_instance = Mock()
+        mock_active_branch = Mock()
+        mock_active_branch.name = "main"
+        mock_active_branch.checkout = Mock()  # Mock checkout to prevent git errors
+        mock_repo_instance.active_branch = mock_active_branch
+        mock_repo_instance.heads = {"main": mock_active_branch}
+        mock_git.Repo.return_value = mock_repo_instance
 
         result = self.runner.invoke(main, ["--file", self.file, "--dry-run", "False", "--open-pr", "True"])
         self.assertEqual(result.exit_code, 0)
