@@ -1,7 +1,5 @@
-#!/usr/bin/env python
-
 """
-Unit tests for pkg_95120/cli.py
+Unit tests
 
 This module provides comprehensive test coverage for the CLI functionality
 including authentication, repository operations, version variance detection,
