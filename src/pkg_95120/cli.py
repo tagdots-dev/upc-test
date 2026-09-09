@@ -353,7 +353,7 @@ def main(file, dry_run, open_pr):
     When --open-pr is used, creates a new branch, commits the changes, pushes
     to remote, and opens a pull request on GitHub.
     """
-    print(f"Starting update-pre-commit (file: {file}, dry-run: {dry_run}, open-pr: {open_pr})...\n")
+    print(f"🚀 Starting update-pre-commit (file: {file}, dry-run: {dry_run}, open-pr: {open_pr})...\n")
     try:
         origin_owner_repo = get_origin_owner_repo()
         original_active_branch_name = get_active_branch_name()
